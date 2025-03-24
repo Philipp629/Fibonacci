@@ -1,28 +1,29 @@
 # Funktion zur Berechnung der Fibonacci-Folge ab einer bestimmten Zahl
 def fibonacci_from_number(n, start_number):
-    # Liste für die Fibonacci-Zahlen initialisieren
-    fib_sequence = [0, 1]
+    # Liste für die natürliche Fibonacci-Folge zur Überprüfung
+    fib_natural = [0, 1]
+    while fib_natural[-1] < start_number:
+        fib_natural.append(fib_natural[-1] + fib_natural[-2])
     
-    # Generiere die Folge, bis wir die Startzahl erreichen oder überschreiten
-    while fib_sequence[-1] < start_number:
+    # Prüfe, ob die Startzahl in der natürlichen Folge ist
+    if start_number not in fib_natural:
+        print(f"\nHinweis: {start_number} ist keine natürliche Fibonacci-Zahl.")
+        print(f"Nächstniedrigere: {fib_natural[-2]}, nächsthöhere: {fib_natural[-1]}")
+    
+    # Finde die vorherige Zahl für eine korrekte Fibonacci-Folge
+    fib_sequence = [fib_natural[-2], start_number]  # Start mit der vorherigen natürlichen Zahl und der eingegebenen Zahl
+    for i in range(n - 2):  # Berechne die restlichen n-2 Zahlen
         fib_sequence.append(fib_sequence[-1] + fib_sequence[-2])
     
-    # Prüfe, ob die Startzahl in der Folge ist
-    if start_number not in fib_sequence:
-        lower = fib_sequence[-2]  # Nächstniedrigere Zahl
-        higher = fib_sequence[-1]  # Nächsthöhere Zahl
-        return False, lower, higher, None
+    # Wenn n=1, geben wir nur die Startzahl zurück
+    if n == 1:
+        return [start_number]
     
-    # Berechne die nächsten n Zahlen ab der Startzahl
-    start_index = fib_sequence.index(start_number)
-    while len(fib_sequence) < start_index + n:
-        fib_sequence.append(fib_sequence[-1] + fib_sequence[-2])
-    
-    return True, None, None, fib_sequence[start_index:start_index + n]
+    return fib_sequence[-n:]  # Rückgabe der letzten n Zahlen
 
 # Schritt 1: Die ersten 8 Fibonacci-Zahlen als Beispiel ausgeben
 n_default = 8
-is_valid, _, _, fib_numbers_default = fibonacci_from_number(n_default, 0)
+fib_numbers_default = fibonacci_from_number(n_default, 0)
 print(f"Beispiel: Die ersten {n_default} Fibonacci-Zahlen sind:")
 print(fib_numbers_default)
 
@@ -38,27 +39,18 @@ while True:
     except ValueError:
         print("Ungültige Eingabe. Bitte gib eine ganze Zahl ein.")
 
-# Startzahl abfragen mit Prüfung
+print("\nBei welcher Zahl soll die Fibonacci-Folge beginnen?")
 while True:
-    print("\nBei welcher Zahl soll die Fibonacci-Folge beginnen?")
     try:
-        start_number = int(input("Gib die Startzahl ein (z. B. 0, 1, 2, 3, 5, ...): "))
+        start_number = int(input("Gib die Startzahl ein: "))
         if start_number < 0:
             print("Bitte gib eine nicht-negative Zahl ein.")
-            continue
-        
-        # Prüfe die Startzahl und berechne die Folge
-        is_valid, lower, higher, fib_numbers_user = fibonacci_from_number(n_user, start_number)
-        
-        if not is_valid:
-            print(f"\nHinweis: {start_number} ist keine Fibonacci-Zahl.")
-            print(f"Stattdessen könntest du bei {lower} (nächstniedriger) oder {higher} (nächsthöher) beginnen.")
-            continue
         else:
             break
     except ValueError:
         print("Ungültige Eingabe. Bitte gib eine ganze Zahl ein.")
 
-# Ausgabe der benutzerdefinierten Fibonacci-Folge
+# Berechnung und Ausgabe der benutzerdefinierten Fibonacci-Folge
+fib_numbers_user = fibonacci_from_number(n_user, start_number)
 print(f"\nDie {n_user} Fibonacci-Zahlen ab {start_number} sind:")
 print(fib_numbers_user)
