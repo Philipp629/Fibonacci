@@ -13,10 +13,25 @@ def fibonacci(n):
     
     return fib_sequence
 
-# Die ersten 8 Fibonacci-Zahlen berechnen
-n = 8
-fib_numbers = fibonacci(n)
+# Schritt 1: Die ersten 8 Fibonacci-Zahlen berechnen und ausgeben
+n_default = 8
+fib_numbers_default = fibonacci(n_default)
+print(f"Die ersten {n_default} Fibonacci-Zahlen sind:")
+print(fib_numbers_default)
 
-# Ausgabe der Ergebnisse
-print(f"Die ersten {n} Fibonacci-Zahlen sind:")
-print(fib_numbers)
+# Schritt 2: Anwender nach der gewünschten Anzahl fragen
+print("\nWie viele Fibonacci-Zahlen möchtest du ausgeben?")
+while True:
+    try:
+        n_user = int(input("Gib eine Zahl ein: "))
+        if n_user < 0:
+            print("Bitte gib eine positive Zahl ein.")
+        else:
+            break
+    except ValueError:
+        print("Ungültige Eingabe. Bitte gib eine ganze Zahl ein.")
+
+# Berechnung und Ausgabe der benutzerdefinierten Anzahl
+fib_numbers_user = fibonacci(n_user)
+print(f"\nDie ersten {n_user} Fibonacci-Zahlen sind:")
+print(fib_numbers_user)
